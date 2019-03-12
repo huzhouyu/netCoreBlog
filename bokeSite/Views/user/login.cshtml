@@ -1,0 +1,124 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="~/login/css/style.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/moban1648/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <!--webfonts-->
+    <!--//webfonts-->
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <h1>Login or Create a Free Account!</h1>
+        </div>
+        <p>Lorem iopsum dolor sit amit,consetetur sadipscing eliter,sed diam voluptua.At vero  eso et accusam et justo duo dolores et ea rebum. </p>
+        <form>
+            <ul class="left-form">
+                <h2>New Account:</h2>
+                <li>
+                    <input type="text" placeholder="Username" id="registerusername"/>
+                    <a href="#" class="icon ticker"> </a>
+                    <div class="clear"> </div>
+                </li>
+                <li>
+                    <input type="text" placeholder="用户昵称" id="registernicheng" />
+                    <a href="#" class="icon ticker"> </a>
+                    <div class="clear"> </div>
+                </li>
+                <li>
+                    <input type="password" placeholder="password" id="registerpwd1"/>
+                    <a href="#" class="icon into"> </a>
+                    <div class="clear"> </div>
+                </li>
+                <li>
+                    <input type="password" placeholder="password" id="registerpwd2"/>
+                    <a href="#" class="icon into"> </a>
+                    <div class="clear"> </div>
+                </li>
+                <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Please inform me of upcoming  w3layouts, Promotions and news</label>
+                <input class="btn-danger" type="button" onClick="myFunction('Create')" value="Create Account"/>
+                <div class="clear"> </div>
+            </ul>
+            <ul class="right-form">
+                <h3>Login:</h3>
+                <div>
+                    <li><input type="text" placeholder="Username"  id="loginuser" /></li>
+                    <li> <input type="password" placeholder="Password" id="loginpwd"  /></li>
+                    <h4>I forgot my Password!</h4>
+                    <br />
+                    <br />
+                    <input class="btn-success" type="button" onClick="myFunction('login')" value="Login">
+                </div>
+                <div class="clear"> </div>
+            </ul>
+            <div class="clear"> </div>
+
+        </form>
+
+    </div>
+    <script type="text/javascript">
+        
+        function myFunction(str) {
+            if (str == 'login') {
+                user = document.getElementById('loginuser').value;
+                pwd = document.getElementById('loginpwd').value;
+                var obj = {};
+                obj.username = user;
+                obj.pwd = pwd;
+                if (user == '' || pwd == "") {
+                    alert('账号或者密码不可以为空');
+                    return;
+                }
+                $.post('/user/islogin', obj, function (data, stau) {
+                    if (!data.issuf) {
+                        alert(data.msg);
+
+                    }
+                    else {
+                        window.location.href = data.backurl;
+
+                    }
+
+                })
+                
+            }
+            else if (str =='Create') {
+                var obj = {};
+                obj.username = document.getElementById('registerusername').value;
+                obj.pwd = document.getElementById('registerpwd1').value;
+                obj.nicheng = document.getElementById('registernicheng').value;
+                pwd = document.getElementById('registerpwd2').value;
+                if (obj.username == '' || obj.pwd == "") {
+                    alert('账号或者密码不可以为空');
+                    return;
+                }
+                else if (obj.pwd != pwd) {
+                    alert('两次输入的密码不相等');
+                    return;
+                 }
+                $.post('/user/register', obj, function (data, stau) {
+                    if (!data.issuf) {
+                        alert(data.msg);
+
+                    }
+                    else {
+                        window.location.href = data.backurl;
+
+                    }
+
+                })
+            }
+
+        }
+    </script>
+
+
+</body>
+
+</html>

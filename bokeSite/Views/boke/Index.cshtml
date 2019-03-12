@@ -1,0 +1,71 @@
+﻿
+@{
+    Layout = null;
+    var userInfo = ViewBag.userInfo as userinfo;
+    var userWenZhangType = ViewBag.userWenZhangType as List<userwenzhangleixingkuozhan>;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@userInfo.nicheng</title>
+
+    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style type="text/css">
+        #wenzhanglistUl {
+            list-style-type: none;
+        }
+        #wenzhanglistUl li:hover {
+            background: #eee;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-offset-1 col-sm-10">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">@userInfo.nicheng 的博客</a>
+                    </div>
+                    <div>
+                        <ul id="headListForType" class="nav navbar-nav">
+                            <li class=""><a needhref="/boke/wenzhanglist">全部文章</a></li>
+                            @{
+                                foreach (var item in userWenZhangType)
+                                {
+                                    var tmp = item.leixingming + "(" + item.count + ")";
+                                    <li class="" leixing="@item.id"><a needhref="/boke/wenzhanglist?leixing=@item.id">@tmp</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-1 col-sm-10">
+
+            <div>
+                <ul id="wenzhanglistUl" class="col-sm-12">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="js/boke/index.js"></script>
+    <script>
+        $(function () {
+        var bokeIndex = new BokeIndex('@userInfo.username');
+            bokeIndex.ChoiceLeixing('@ViewBag.leixing');
+        })
+    </script>
+</body>
+</html>

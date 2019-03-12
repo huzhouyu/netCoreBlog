@@ -1,0 +1,62 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+          "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #preview {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+            #preview * {
+                font-family: sans-serif;
+                font-size: 16px;
+            }
+    </style>
+    <link href="/ue/utf8-net/themes/iframe.css" rel="stylesheet" />
+    <link href="/ue/utf8-net/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" />
+    <script src="/ue/utf8-net/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script src="/ue/utf8-net/ueditor.parse.min.js"></script>
+    <title></title>
+</head>
+<body class="view">
+    <div id="preview" style="margin:8px">
+        <pre class="brush:c#;toolbar:false">using&nbsp;System.IO;
+using&nbsp;System.Linq;
+using&nbsp;System.Threading.Tasks;
+using&nbsp;System.Text;
+
+namespace&nbsp;bokeSite.tools
+{
+&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;FileRW
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;写入文件
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;/summary&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;param&nbsp;name=&quot;path&quot;&gt;&lt;/param&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;param&nbsp;name=&quot;content&quot;&gt;&lt;/param&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;param&nbsp;name=&quot;exists&quot;&gt;&lt;/param&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;returns&gt;&lt;/returns&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;bool&nbsp;CreateHtml(string&nbsp;path,string&nbsp;content,bool&nbsp;exists=true)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</pre><p>test<br /></p>
+    </div>
+</body>
+<script>
+  //  document.getElementById('preview').innerHTML = editor.getContent();
+    uParse('#preview', {
+        rootPath: '/',
+        chartContainerHeight: 500
+    })
+</script>
+</html>

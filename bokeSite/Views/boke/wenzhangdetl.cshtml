@@ -1,0 +1,95 @@
+﻿
+@{
+    Layout = null;
+    var userInfo = ViewBag.userInfo as userinfo;
+    var userWenZhangType = ViewBag.userWenZhangType as List<userwenzhangleixingkuozhan>;
+    var wenzhangdtl = ViewBag.wenzhangdtl as userwenzhangkuozhan;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@userInfo.nicheng</title>
+
+
+    <link href="/ue/utf8-net/themes/iframe.css" rel="stylesheet" />
+    <link href="/ue/utf8-net/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" />
+    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+    <link href="/css/boke/comment.css" rel="stylesheet" />
+    <link href="/css/pinglun/style.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-offset-1 col-sm-10">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">@userInfo.nicheng 的博客</a>
+                    </div>
+                    <div>
+                        <ul id="headListForType" class="nav navbar-nav">
+                            <li class=""><a href="/@userInfo.username">全部文章</a></li>
+                            @{
+                                foreach (var item in userWenZhangType)
+                                {
+                                    var tmp = item.leixingming + "(" + item.count + ")";
+                                    <li class="" style="float:left" leixing="@item.id"><a href="/@userInfo.username?leixing=@item.id">@tmp</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row" style="margin:0 auto;">
+        <h1 class="col-xs-offset-1">@wenzhangdtl.wenzhangname</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-1 col-lg-10">
+            <pre id="preview1">
+                    @Html.Raw(wenzhangdtl.content);
+                    </pre>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="commentAll col-xs-offset-1 col-lg-10" id="commentAll">
+            <!--评论区域 begin-->
+            <div class="reviewArea clearfix">
+                <textarea class="content comment-input" placeholder="Please enter a comment&hellip;" onkeyup="keyUP(this)"></textarea>
+                <a href="javascript:;" class="plBtn">评论</a>
+            </div>
+            <!--评论区域 end-->
+            <!--回复区域 begin-->
+            <div class="comment-show">
+            </div>
+            <!--回复区域 end-->
+        </div>
+    </div>
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/js/comment/jquery.flexText.js"></script>
+    <script src="/js/boke/comment.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/ue/utf8-net/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script src="/js/boke/wenzhangdetl.js"></script>
+    <script src="/ue/utf8-net/ueditor.parse.js"></script>
+    <script>
+        //var bokeIndex = new BokeIndex('@userInfo.username');
+        uParse('#preview1', {
+            rootPath: '/',
+            chartContainerHeight: 500
+        })
+        var BokeWenzhangdetl = new BokeWenzhangdetl('@userInfo.username');
+        BokeWenzhangdetl.ChoiceLeixing('@wenzhangdtl.leixing');
+        //$("#headListForType")
+    </script>
+</body>
+</html>

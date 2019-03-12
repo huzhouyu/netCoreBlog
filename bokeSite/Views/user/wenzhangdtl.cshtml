@@ -1,0 +1,418 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+          "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>完整demo</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    @*<script type="text/javascript" charset="utf-8" src="ueditor.config.js"></script>
+        <script type="text/javascript" charset="utf-8" src="ueditor.all.min.js"></script>
+        <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+        <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+        <script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>*@
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    @*<script type="text/javascript" src="~/ue/utf8-net/ueditor.parse.js"></script>*@
+    <script type="text/javascript" src="~/ue/utf8-net/ueditor.config.js"></script>
+    <script type="text/javascript" src="~/ue/utf8-net/ueditor.all.min.js"></script>
+    @*<script type="text/javascript" src="~/ue/utf8-net/ueditor.all.js"></script>*@
+    <script type="text/javascript" src="~/ue/utf8-net/lang/zh-cn/zh-cn.js"></script>
+
+
+    <link href="~/css/pinglun/comment.css" rel="stylesheet" />
+
+    <link href="~/css/pinglun/style.css" rel="stylesheet" />
+    <script src="~/js/comment/jquery.flexText.js"></script>
+
+    <style type="text/css">
+        div {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label class="pull-right" style="margin-top:6px">标题：</label>
+        </div>
+        <div class="col-md-3">
+            <input id="title" class="form-control" placeholder="请输入你的文章题目" />
+        </div>
+        <div class="col-md-1"><label class="pull-right" style="margin-top:6px">分类：</label></div>
+        <div class="col-md-1">
+            <select id="leixinglist" class="form-control" title="文章类型"></select>
+        </div>
+        <div class="col-md-2">
+            <div class="input-group">
+                <input id="addleixing" type="text" placeholder="要添加的文章类型" class="form-control" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="addleixingbtn" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <select id="iskejian" class="form-control" title="是否可见">
+                <option value=1>可见</option>
+                <option value=0>不可见</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-danger" onclick="top.topManager.reloadPage()">刷新本页面</button>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-danger"  style="display:none" id="setEnabled">编辑文章</button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <script id="editor" type="text/plain" style="height:500px;width:1150px">
+            </script>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <button  id="deltwenzhang"  class="btn btn-success"  style="display:none">删掉文章</button>
+        </div>
+        <div class="col-md-2">
+            <button  id="editwenzhang" class="btn btn-danger"  style="display:none">上传编辑后的文章</button>
+        </div>
+        <div  class="col-md-2">
+            <button  id="uadatwenzhang" class="btn btn-danger"  style="display:none">上传本篇文章</button>
+        </div>
+    </div>
+
+
+    <div class="commentAll" id="commentAll">
+        <!--评论区域 begin-->
+        <div class="reviewArea clearfix">
+            <textarea class="content comment-input" placeholder="Please enter a comment&hellip;" onkeyup="keyUP(this)"></textarea>
+            <a href="javascript:;" class="plBtn">评论</a>
+        </div>
+        <!--评论区域 end-->
+        <!--回复区域 begin-->
+        <div class="comment-show">
+        </div>
+        <!--回复区域 end-->
+    </div>
+
+    <script type="text/javascript" src="~/moban216/assets/js/bui-min.js"></script>
+    <script type="text/javascript" src="~/moban216//assets/js/config-min.js"></script>
+    <script src="~/js/comment/comment.js"></script>
+
+    <script type="text/javascript">
+
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor');
+        function jiazaileixing(id) {
+            $.post('/user/wenzhangleixing', function (data, stu) {
+                if (data.issuf) {
+                    if (data.count > 0) {
+                        var html = '<option value="0">无类型</option>';
+                        $.each(data.wenzhangleixing, function (key, val) {
+                            html += '<option value="' + val.id + '">' + val.leixingming + '</option>';
+                        });
+                        $('#leixinglist').empty().append(html);
+                        $('#leixinglist').val(id);
+                    }
+
+                }
+            });
+
+        }
+
+        $(function () {
+                        var dat = window.location.search;
+                        id = GetUrlParam('id');
+                        if (id == '' || id == 'new') {
+                            jiazaileixing(0);
+                            $('#iskejian').val(1);
+                            $('#uadatwenzhang').show();
+                            $('.commentAll').hide();
+                        }
+                        else {
+                            $.post('/user/getwenzhangdtl' + dat, function (data, stu) {
+                                if (data.issuf) {
+                                    UE.getEditor('editor').setDisabled('fullscreen');
+                                    $('#setEnabled').show();
+                                    $('.commentAll').show();
+                                    $('#deltwenzhang').show();
+                                    if (data.dtl.iskejian) {
+                                        $('#iskejian').val(1);
+                                    }
+                                    else {
+                                        $('#iskejian').val(0);
+
+                                    }
+                                    $('#title').val(data.dtl.wenzhangname);
+                                    jiazaileixing(data.dtl.leixing);
+                                    //$.get(data.dtl.wenzhangurl, function (data, stu) {
+                                    //    UE.getEditor('editor').setContent(data);
+                                    //});
+                                    UE.getEditor('editor').setContent(data.dtl.content);
+                                }
+                            });
+
+             }
+             $('#setEnabled').click(function () {
+                 UE.getEditor('editor').setEnabled();
+                 $('#editwenzhang').show();
+             });
+
+                                ///add文章事件
+             $('#uadatwenzhang').click(function () {
+                                    if (UE.getEditor('editor').hasContents() && $('#title').val() != '') {
+                                        var obj = {};
+                                        obj.wenzhangname = $('#title').val();
+                                        obj.content = UE.getEditor('editor').getContent();
+                                        obj.leixing = $('#leixinglist').val();
+                                        obj.iskejian = $('#iskejian').val();
+                                        var content100 = UE.getEditor('editor').getContentTxt();
+                                        if (content100.length > 10000) {
+                                            obj.content100 = content100.substring(0, 11000);
+
+                                        }
+                                        else {
+                                            obj.content100 = content100;
+                                        }
+                                        $.post('/user/addwenzhang', obj, function (data, stu) {
+                                            if (data.result.issuf) {
+                                                window.location.href = '/user/wenzhangdtl?id=' + data.result.content.id;
+                                                //修改本页面标题
+                                                top.topManager.setPageTitle($('#title').val());
+                                                alert('发表文章成功');
+
+                                            }
+                                            else {
+                                                alert(data.result.msg);
+
+                                            }
+                                        });
+
+
+                                    } else {
+                                        alert('题目和内容都不能为空');
+
+                                    }
+
+                                });
+             $('#addleixingbtn').click(function () {
+                                    var leixingming = $('#addleixing').val();
+                                    if (leixingming == null || leixingming == '') {
+                                        alert('文章类型名不能为空');
+                                    }
+                                    else {
+                                        var obj = {};
+                                        obj.leixingming = leixingming;
+                                        $.post('/user/addleixing', obj, function (data, stu) {
+                                            if (data.issuf) {
+                                                jiazaileixing(data.issuf);
+                                                alert('添加文章类型成功');
+
+                                            }
+                                            else {
+                                                alert('添加文章类型失败');
+
+                                            }
+                                        });
+
+                                    }
+             });
+             $('#deltwenzhang').click(function () {
+                 if (confirm('确定删除' + $('#title').val()+'吗？')) {
+                     if (GetUrlParam('id') != null && GetUrlParam('id') != '') {
+                         $.post('/user/delwenzhang', { 'id': GetUrlParam('id') }, function (data, stu) {
+                             debugger;
+                             if (data.result.issuf) {
+                                 top.topManager.reloadPage('wengzhang');
+                                 alert('删除' + $('#title').val()+'成功');
+                                 //关闭本页
+                                 top.topManager.closePage();
+                             }
+                             else {
+                                 alert(data.result.msg);
+
+                             }
+                         });
+
+
+                     } else {
+                         alert('你在干嘛');
+
+                     }
+                 }
+             });
+
+             $('#editwenzhang').click(function () {
+                 if (UE.getEditor('editor').hasContents() && $('#title').val() != '') {
+                     var obj = {};
+                     obj.wenzhangname = $('#title').val();
+                     obj.content = UE.getEditor('editor').getContent();
+                     obj.leixing = $('#leixinglist').val();
+                     obj.iskejian = $('#iskejian').val();
+                     obj.id = GetUrlParam('id');
+                     var content100 = UE.getEditor('editor').getContentTxt();
+                     if (content100.length > 10000) {
+                         obj.content100 = content100.substring(0, 11000);
+
+                     }
+                     else {
+                         obj.content100 = content100;
+                     }
+                     $.post('/user/editwenzhang', obj, function (data, stu) {
+                         if (data.result.issuf) {
+                             window.location.href = '/user/wenzhangdtl?id=' + data.result.content.id;
+                             //修改本页面标题
+                             top.topManager.setPageTitle($('#title').val());
+                             alert('文章修改成功');
+
+                         }
+                         else {
+                             alert(data.result.msg);
+
+                         }
+                     });
+
+
+                 } else {
+                     alert('题目和内容都不能为空');
+
+                 }
+
+             });
+                        });
+ 
+        ///获取指定参数
+        function GetUrlParam(paraName) {
+            var url = document.location.toString();
+            var arrObj = url.split("?");
+
+            if (arrObj.length > 1) {
+                var arrPara = arrObj[1].split("&");
+                var arr;
+
+                for (var i = 0; i < arrPara.length; i++) {
+                    arr = arrPara[i].split("=");
+
+                    if (arr != null && arr[0] == paraName) {
+                        return arr[1];
+                    }
+                }
+                return "";
+            }
+            else {
+                return "";
+            }
+        }
+
+        function isFocus(e) {
+            alert(UE.getEditor('editor').isFocus());
+            UE.dom.domUtils.preventDefault(e)
+        }
+        function setblur(e) {
+            UE.getEditor('editor').blur();
+            UE.dom.domUtils.preventDefault(e)
+        }
+        function insertHtml() {
+            var value = prompt('插入html代码', '');
+            UE.getEditor('editor').execCommand('insertHtml', value)
+        }
+        function createEditor() {
+            enableBtn();
+            UE.getEditor('editor');
+        }
+        function getAllHtml() {
+            alert(UE.getEditor('editor').getAllHtml())
+        }
+        function getContent() {
+            var arr = [];
+            arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+            arr.push("内容为：");
+            arr.push(UE.getEditor('editor').getContent());
+            alert(arr.join("\n"));
+        }
+        function getPlainTxt() {
+            var arr = [];
+            arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+            arr.push("内容为：");
+            arr.push(UE.getEditor('editor').getPlainTxt());
+            alert(arr.join('\n'))
+        }
+        function setContent(isAppendTo) {
+            var arr = [];
+            arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+            UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
+            alert(arr.join("\n"));
+        }
+        function setDisabled() {
+            UE.getEditor('editor').setDisabled('fullscreen');
+            disableBtn("enable");
+        }
+
+        function setEnabled() {
+            UE.getEditor('editor').setEnabled();
+            enableBtn();
+        }
+
+        function getText() {
+            //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+            var range = UE.getEditor('editor').selection.getRange();
+            range.select();
+            var txt = UE.getEditor('editor').selection.getText();
+            alert(txt)
+        }
+
+        function getContentTxt() {
+            var arr = [];
+            arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+            arr.push("编辑器的纯文本内容为：");
+            arr.push(UE.getEditor('editor').getContentTxt());
+            alert(arr.join("\n"));
+        }
+        function hasContent() {
+            var arr = [];
+            arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+            arr.push("判断结果为：");
+            arr.push(UE.getEditor('editor').hasContents());
+            alert(arr.join("\n"));
+        }
+        function setFocus() {
+            UE.getEditor('editor').focus();
+        }
+        function deleteEditor() {
+            disableBtn();
+            UE.getEditor('editor').destroy();
+        }
+        function disableBtn(str) {
+            var div = document.getElementById('btns');
+            var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+            for (var i = 0, btn; btn = btns[i++];) {
+                if (btn.id == str) {
+                    UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+                } else {
+                    btn.setAttribute("disabled", "true");
+                }
+            }
+        }
+        function enableBtn() {
+            var div = document.getElementById('btns');
+            var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+            for (var i = 0, btn; btn = btns[i++];) {
+                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+            }
+        }
+
+        function getLocalData() {
+            alert(UE.getEditor('editor').execCommand("getlocaldata"));
+        }
+
+        function clearLocalData() {
+            UE.getEditor('editor').execCommand("clearlocaldata");
+            alert("已清空草稿箱")
+        }
+    </script>
+</body>
+</html>
