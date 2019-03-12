@@ -23,38 +23,42 @@
             background: #eee;
             cursor: pointer;
         }
+        #firstContainer{
+
+        }
     </style>
 </head>
 <body>
-    <div class="row">
-        <div class="col-xs-offset-1 col-sm-10">
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">@userInfo.nicheng 的博客</a>
-                    </div>
-                    <div>
-                        <ul id="headListForType" class="nav navbar-nav">
-                            <li class=""><a needhref="/boke/wenzhanglist">全部文章</a></li>
-                            @{
-                                foreach (var item in userWenZhangType)
-                                {
-                                    var tmp = item.leixingming + "(" + item.count + ")";
-                                    <li class="" leixing="@item.id"><a needhref="/boke/wenzhanglist?leixing=@item.id">@tmp</a></li>
+    <div id="firstContainer" class="container1">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-10">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/@userInfo.username">@userInfo.nicheng 的博客</a>
+                        </div>
+                        <div>
+                            <ul id="headListForType" class="nav navbar-nav">
+                                <li class=""><a needhref="/boke/wenzhanglist">全部文章</a></li>
+                                @{
+                                    foreach (var item in userWenZhangType)
+                                    {
+                                        var tmp = item.leixingming + "(" + item.count + ")";
+                                        <li class="" leixing="@item.id"><a needhref="/boke/wenzhanglist?leixing=@item.id">@tmp</a></li>
+                                    }
                                 }
-                            }
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-offset-1 col-sm-10">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-10">
 
-            <div>
-                <ul id="wenzhanglistUl" class="col-sm-12">
-                </ul>
+                <div>
+                    <ul id="wenzhanglistUl" class="col-xs-12"></ul>
+                </div>
             </div>
         </div>
     </div>

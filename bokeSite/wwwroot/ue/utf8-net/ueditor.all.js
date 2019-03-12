@@ -29101,7 +29101,7 @@ UE.ui = baidu.editor.ui = {};
 
                     document.documentElement.style.overflow = this._bakHtmlOverflow;
                     document.body.style.overflow = this._bakBodyOverflow;
-                    editor.iframe.parentNode.style.width = this._bakEditorContaninerWidth + 'px';
+                    editor.iframe.parentNode.style.width = '100%';//this._bakEditorContaninerWidth + 'px';
                     window.scrollTo(0, this._bakScrollTop);
                 }
                 if (browser.gecko && editor.body.contentEditable === 'true') {
