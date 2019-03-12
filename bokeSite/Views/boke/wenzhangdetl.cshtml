@@ -76,19 +76,32 @@
             </div>
         </div>
     </div>
-            <script src="/lib/jquery/dist/jquery.js"></script>
-            <script src="/js/comment/jquery.flexText.js"></script>
-            <script src="/js/boke/comment.js"></script>
-            <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="/ue/utf8-net/third-party/SyntaxHighlighter/shCore.js"></script>
-            <script src="/js/boke/wenzhangdetl.js"></script>
-            <script src="/ue/utf8-net/ueditor.parse.js"></script>
-            <script>
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/js/comment/jquery.flexText.js"></script>
+    <script src="/js/boke/comment.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/ue/utf8-net/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script src="/js/boke/wenzhangdetl.js"></script>
+    <script src="/ue/utf8-net/ueditor.parse.js"></script>
+    <script>
         //var bokeIndex = new BokeIndex('@userInfo.username');
+        ///不需要换行的语言
+        var noNeedBoot = ['python','go','golang'];
         uParse('#preview1', {
             rootPath: '/',
             chartContainerHeight: 500
                 })
+        var is_mobile = navigator.userAgent.toLowerCase().match(/(ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) != null;    //进行userAgent匹配
+        if (is_mobile) {
+            $("#firstContainer > div > div").removeClass('col-xs-offset-1').removeClass('col-xs-10').addClass('col-xs-12').css('padding-left', "20px");
+            if (noNeedBoot.indexOf('@wenzhangdtl.wenzhangname'.toLowerCase())==-1) {
+                $("#preview1 ol").css("width", "100%").css("padding-left", "0px");
+                $("#preview1 ul").css("width", "100%").css("padding-left", "0px");
+                $("#preview1 ul").css("width", "100%");
+                $("#preview1").css("padding", "10px").css("overflow-x", "hidden");
+            }
+            $("#preview1 img").css("width", "100%").css("height", "100%");
+        };
         var BokeWenzhangdetl = new BokeWenzhangdetl('@userInfo.username');
         BokeWenzhangdetl.ChoiceLeixing('@wenzhangdtl.leixing');
         //$("#headListForType")
