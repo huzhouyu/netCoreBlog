@@ -12697,11 +12697,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\代码项目文件夹\\MYsite\\bokeSite\\bokeSite.csproj",
+      "projectUniqueName": "D:\\代码项目文件夹\\MYsite\\test\\bokeSite\\bokeSite.csproj",
       "projectName": "bokeSite",
-      "projectPath": "D:\\代码项目文件夹\\MYsite\\bokeSite\\bokeSite.csproj",
+      "projectPath": "D:\\代码项目文件夹\\MYsite\\test\\bokeSite\\bokeSite.csproj",
       "packagesPath": "C:\\Users\\huzhouyu\\.nuget\\packages\\",
-      "outputPath": "D:\\代码项目文件夹\\MYsite\\bokeSite\\obj\\",
+      "outputPath": "D:\\代码项目文件夹\\MYsite\\test\\bokeSite\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
