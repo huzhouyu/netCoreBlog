@@ -41,8 +41,8 @@ namespace bokeSite.Controllers
         public IActionResult login()
         {
             userinfo uif = new userinfo();
-            uif.username=jiami.Decrypt( HttpContext.Request.Cookies["user"]);
-            uif.pwd=jiami.Decrypt( HttpContext.Request.Cookies["key"]);
+            uif.username= HttpContext.Request.Cookies["user"];
+            uif.pwd=HttpContext.Request.Cookies["key"];
             if(uif.username!=null&&uif.pwd!=null&&new WenZhangBLL().islogin(uif))
             {
                 HttpContext.Response.Redirect("/user/index");
@@ -64,12 +64,13 @@ namespace bokeSite.Controllers
         public JsonResult register(userinfo uif)
         {
             UserInfoBLL uib = new UserInfoBLL();
+            uif.pwd = jiami.Encrypt(uif.pwd);
             var data =uif.username!=null&&uif.pwd!=null?uib.register(uif):false;
 
             if (data)
             {
                 HttpContext.Response.Cookies.Append("key", jiami.Encrypt(uif.pwd));
-                HttpContext.Response.Cookies.Append("user", jiami.Encrypt(uif.username));
+                HttpContext.Response.Cookies.Append("user", uif.username);
                 string backurl = HttpContext.Request.Cookies["backurl"]!=null? HttpContext.Request.Cookies["backurl"]: "/user/index";
 
                 return Json(new { issuf = true, msg = "登陆成功", backurl = backurl });
@@ -89,12 +90,13 @@ namespace bokeSite.Controllers
         {
 
                 WenZhangBLL uib = new WenZhangBLL();
-              var data=  uib.islogin(uif);
+            uif.pwd = jiami.Encrypt(uif.pwd);
+             var data=  uib.islogin(uif);
             
             if (data)
             {
-             HttpContext.Response.Cookies.Append("key",jiami.Encrypt(uif.pwd));
-             HttpContext.Response.Cookies.Append("user", jiami.Encrypt(uif.username));
+             HttpContext.Response.Cookies.Append("key",uif.pwd);
+             HttpContext.Response.Cookies.Append("user",uif.username);
              string backurl=HttpContext.Request.Cookies["backurl"];
 
                 return Json(new { issuf = true, msg = "登陆成功",backurl= backurl });
@@ -108,8 +110,8 @@ namespace bokeSite.Controllers
         public JsonResult info()
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             var data = new WenZhangBLL().Getuserinfo(uif);
            if (data.Rows.Count == 1)
             {
@@ -234,8 +236,8 @@ namespace bokeSite.Controllers
         public JsonResult wenzhangleixing()
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             if (data.Rows.Count == 1)
@@ -257,8 +259,8 @@ namespace bokeSite.Controllers
         public IActionResult wenzhanglist()
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             List<userwenzhangkuozhan> wenzhangleixinglist = new List<userwenzhangkuozhan>();
@@ -310,8 +312,8 @@ namespace bokeSite.Controllers
         public JsonResult getwenzhangdtl()
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             string wenzhangid = GetKeyValue("id");
@@ -332,8 +334,8 @@ namespace bokeSite.Controllers
         public JsonResult addleixing(userwenzhangleixing uwz)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             string leixingming = uwz.leixingming;
@@ -354,8 +356,8 @@ namespace bokeSite.Controllers
         public JsonResult addwenzhang(userwenzhang uwz)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             uwz.userid = data.Rows.Count != 0 ? Convert.ToInt32(data.Rows[0]["id"]) : 0;
@@ -373,8 +375,8 @@ namespace bokeSite.Controllers
         public JsonResult delwenzhang(userwenzhang uwz)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             uwz.userid = data.Rows.Count != 0 ? Convert.ToInt32(data.Rows[0]["id"]) : 0;
@@ -393,8 +395,8 @@ namespace bokeSite.Controllers
         public JsonResult editwenzhang(userwenzhang uwz)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             uwz.userid = data.Rows.Count != 0 ? Convert.ToInt32(data.Rows[0]["id"]) : 0;

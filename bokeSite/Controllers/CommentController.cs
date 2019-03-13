@@ -89,8 +89,8 @@ namespace bokeSite.Controllers
         public JsonResult Addcomment(wenzhangpinglun wzp)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             if (wzp.wenzhangid == 0 || wzp.pinglunneirong == null)
             {
                 return Json(new { msg = "操作出错" });
@@ -134,8 +134,8 @@ namespace bokeSite.Controllers
         public JsonResult delcomment(wenzhangpinglun wzp)
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL wz = new WenZhangBLL();
             uif=DataToEnity<userinfo>.DataRowToEntity(wz.Getuserinfo(uif).Rows[0]);            
             CommentBLL cb = new CommentBLL();
@@ -160,8 +160,8 @@ namespace bokeSite.Controllers
         {
 
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             if (wps.pinglunid == 0 || wps.pinglunneirong == null)
             {
                 return Json(new { msg = "操作出错" });
@@ -204,8 +204,8 @@ namespace bokeSite.Controllers
             try
             {
                 userinfo uif = new userinfo();
-                uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-                uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+                uif.username = HttpContext.Request.Cookies["user"];
+                uif.pwd = HttpContext.Request.Cookies["key"];
                 WenZhangBLL wz = new WenZhangBLL();
                 uif = DataToEnity<userinfo>.DataRowToEntity(wz.Getuserinfo(uif).Rows[0]);
                 CommentBLL cb = new CommentBLL();

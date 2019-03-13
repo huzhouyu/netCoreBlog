@@ -148,8 +148,8 @@ namespace bokeSite.Controllers
         public JsonResult getwenzhangdtl()
         {
             userinfo uif = new userinfo();
-            uif.username = jiami.Decrypt(HttpContext.Request.Cookies["user"]);
-            uif.pwd = jiami.Decrypt(HttpContext.Request.Cookies["key"]);
+            uif.username = HttpContext.Request.Cookies["user"];
+            uif.pwd = HttpContext.Request.Cookies["key"];
             WenZhangBLL uib = new WenZhangBLL();
             var data = uib.Getuserinfo(uif);
             string wenzhangid = GetKeyValue("id");

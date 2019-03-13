@@ -20,8 +20,8 @@ namespace bokeSite.Filter
             {
 
             userinfo uif = new userinfo();
-            uif.pwd= jiami.Decrypt( context.HttpContext.Request.Cookies["key"]);
-            uif.username=jiami.Decrypt( context.HttpContext.Request.Cookies["user"]);
+            uif.pwd= context.HttpContext.Request.Cookies["key"];
+            uif.username=context.HttpContext.Request.Cookies["user"];
             WenZhangBLL bLL = new WenZhangBLL();
             if(!bLL.islogin(uif))
             {

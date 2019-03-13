@@ -9,7 +9,7 @@ using bokeSite.Models;
 using System.Data;
 using bokeSite.tools.DataToEnity;
 using System.Text.RegularExpressions;
-
+using bokeSite.tools;
 
 namespace bokeSite.BLL
 {
@@ -25,7 +25,7 @@ namespace bokeSite.BLL
         public bool islogin(userinfo uif)
         {
             UserinfoDAL ud = new UserinfoDAL();
-            MySqlParameter[] mySqlParameter = { new MySqlParameter("@username",uif.username),new MySqlParameter("@pwd",uif.pwd)  };
+            MySqlParameter[] mySqlParameter = { new MySqlParameter("@username",uif.username),new MySqlParameter("@pwd", uif.pwd)  };
             
           var data=  ud.testlogin(@"SELECT  id FROM boke.userinfo where username=@username and pwd=@pwd and isdel=0",mySqlParameter);
             return data.Rows.Count==1;
